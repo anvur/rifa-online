@@ -7,12 +7,12 @@ const fs = require("fs");
 
 const PORT = process.env.PORT || 3000;
 
-// Middleware para servir archivos estáticos (CSS, JS, imágenes)
-app.use(express.static(path.join(__dirname)));
+// Middleware para servir archivos estáticos (CSS, JS, imágenes) desde carpeta public
+app.use(express.static(path.join(__dirname, "public")));
 
-// Ruta principal: sirve index.html
+// Ruta principal: sirve index.html desde carpeta public
 app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "index.html"));
+  res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
 // --- Lógica de la rifa ---
