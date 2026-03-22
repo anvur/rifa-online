@@ -1,53 +1,8 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <title>Rifa Online 1-250</title>
-  <style>
-    body { font-family: 'Segoe UI', Arial, sans-serif; margin: 0; padding: 0; background: #f0f2f5; }
-    #loginForm { height: 100vh; display: flex; justify-content: center; align-items: center; background: linear-gradient(135deg, #74ebd5, #9face6); }
-    #loginBox { background: #fff; padding: 30px; border-radius: 16px; box-shadow: 0 8px 25px rgba(0,0,0,0.2); text-align: center; width: 320px; animation: fadeIn 1s ease; }
-    #loginBox h2 { color: #4A90E2; margin-bottom: 20px; }
-    #loginBox input { width: 90%; padding: 12px; margin: 10px 0; border: 1px solid #ccc; border-radius: 8px; font-size: 14px; }
-    #loginBox button { width: 100%; padding: 12px; background: #4A90E2; color: #fff; border: none; border-radius: 8px; cursor: pointer; font-size: 15px; font-weight: bold; }
-    #loginBox button:hover { background: #357ABD; }
-    #mensaje { color: red; font-size: 14px; }
-    #contenido { display: none; padding: 20px; min-height: 100vh; text-align: center; }
-    #contenido h1 { color: #333; margin-bottom: 20px; }
-    #gridBoletos { display: grid; grid-template-columns: repeat(auto-fit, minmax(50px, 1fr)); gap: 8px; max-width: 1000px; margin: 0 auto; }
-    .boleto { border: 1px solid #ddd; padding: 10px; text-align: center; cursor: pointer; background: #fff; border-radius: 6px; transition: all 0.3s ease; font-weight: bold; font-size: 14px; }
-    .boleto:hover { transform: scale(1.05); background: #f9f9f9; }
-    .boleto input { width: 90%; margin-top: 5px; font-size: 12px; border: none; background: transparent; text-align: center; }
-    .verde { background: #c8f7c5; } .azul { background: #b3e5fc; } .amarillo { background: #fff9c4; } .gris { background: #e0e0e0; }
-    button { margin: 15px; padding: 12px 20px; border: none; border-radius: 6px; cursor: pointer; font-size: 15px; font-weight: bold; }
-    #exportar { background: #2196F3; color: #fff; } #exportar:hover { background: #1976D2; }
-    #guardar { background: #4CAF50; color: #fff; } #guardar:hover { background: #388E3C; }
-    #logout { background: #f44336; color: #fff; } #logout:hover { background: #d32f2f; }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
-  </style>
-</head>
-<body>
-  <div id="loginForm">
-    <div id="loginBox">
-      <h2>Inicio de Sesión</h2>
-      <input type="text" id="usuario" placeholder="Usuario">
-      <input type="password" id="clave" placeholder="Contraseña">
-      <button id="ingresar">Ingresar</button>
-      <p id="mensaje"></p>
-    </div>
-  </div>
+<script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+<script>
+    // Conexión al servidor en Render (antes estaba localhost:3000)
+    const socket = io("https://rifa-online-kkcy.onrender.com");
 
-  <div id="contenido">
-    <h1>Rifa Online (1-250)</h1>
-    <div id="gridBoletos"></div>
-    <button id="guardar">Guardar cambios</button>
-    <button id="exportar">Exportar a CSV</button>
-    <button id="logout">Cerrar Sesión</button>
-  </div>
-
-  <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
-  <script>
-    const socket = io("http://localhost:3000");
     const colores = { "JPACHAS": "verde", "KPACHAS": "azul", "CPACHAS": "amarillo", "NBRAVO": "gris" };
     let usuarioActivo = null;
 
@@ -131,7 +86,7 @@
 
     // Exportar CSV
     document.getElementById("exportar").addEventListener("click", () => {
-      window.location.href = "http://localhost:3000/exportar";
+      window.location.href = "https://rifa-online-kkcy.onrender.com/exportar";
     });
 
     // Cerrar sesión
@@ -141,6 +96,4 @@
       document.getElementById("contenido").style.display = "none";
       document.getElementById("loginForm").style.display = "flex";
     });
-  </script>
-</body>
-</html>
+</script>
