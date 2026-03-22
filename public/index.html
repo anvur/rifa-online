@@ -1,7 +1,45 @@
-<script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
-<script>
-    // Conexión al servidor en Render (antes estaba localhost:3000)
-    const socket = io("https://rifa-online-kkcy.onrender.com");
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Rifa Online</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    #loginForm { display: flex; flex-direction: column; gap: 10px; }
+    #contenido { display: none; }
+    #gridBoletos { display: grid; grid-template-columns: repeat(25, 1fr); gap: 5px; margin-top: 20px; }
+    .boleto { border: 1px solid #ccc; padding: 5px; text-align: center; cursor: pointer; }
+    .verde { background-color: lightgreen; }
+    .azul { background-color: lightblue; }
+    .amarillo { background-color: lightyellow; }
+    .gris { background-color: lightgray; }
+  </style>
+</head>
+<body>
+  <h1>Rifa Online</h1>
+
+  <!-- Formulario de login -->
+  <div id="loginForm">
+    <input type="text" id="usuario" placeholder="Usuario">
+    <input type="password" id="clave" placeholder="Clave">
+    <button id="ingresar">Ingresar</button>
+    <p id="mensaje" style="color:red;"></p>
+  </div>
+
+  <!-- Contenido principal -->
+  <div id="contenido">
+    <div style="margin-bottom:10px;">
+      <button id="guardar">Guardar</button>
+      <button id="exportar">Exportar CSV</button>
+      <button id="logout">Cerrar sesión</button>
+    </div>
+    <div id="gridBoletos"></div>
+  </div>
+
+  <!-- Socket.IO desde tu servidor -->
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    const socket = io(); // se conecta automáticamente al mismo host
 
     const colores = { "JPACHAS": "verde", "KPACHAS": "azul", "CPACHAS": "amarillo", "NBRAVO": "gris" };
     let usuarioActivo = null;
@@ -78,22 +116,21 @@
       alert(msg);
     });
 
-    // Botón Guardar (fuerza actualización)
     document.getElementById("guardar").addEventListener("click", () => {
-      socket.emit("estado_request"); // puedes manejarlo en server.js si quieres forzar broadcast
+      socket.emit("estado_request");
       alert("Cambios guardados y sincronizados.");
     });
 
-    // Exportar CSV
     document.getElementById("exportar").addEventListener("click", () => {
-      window.location.href = "https://rifa-online-kkcy.onrender.com/exportar";
+      window.location.href = "/exportar";
     });
 
-    // Cerrar sesión
     document.getElementById("logout").addEventListener("click", () => {
       localStorage.removeItem("usuarioActivo");
       usuarioActivo = null;
       document.getElementById("contenido").style.display = "none";
       document.getElementById("loginForm").style.display = "flex";
     });
-</script>
+  </script>
+</body>
+</html>
