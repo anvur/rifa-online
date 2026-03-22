@@ -4,26 +4,102 @@
   <meta charset="UTF-8">
   <title>Rifa Online</title>
   <style>
-    body { font-family: Arial, sans-serif; margin: 20px; }
-    #loginForm { display: flex; flex-direction: column; gap: 10px; }
-    #contenido { display: none; }
-    #gridBoletos { display: grid; grid-template-columns: repeat(25, 1fr); gap: 5px; margin-top: 20px; }
-    .boleto { border: 1px solid #ccc; padding: 5px; text-align: center; cursor: pointer; }
+    body {
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+      background: linear-gradient(135deg, #74ebd5 0%, #ACB6E5 100%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .login-container {
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+      width: 300px;
+      text-align: center;
+      animation: fadeIn 1s ease;
+    }
+    .login-container h1 {
+      margin-bottom: 20px;
+      color: #333;
+    }
+    .login-container input {
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      outline: none;
+      transition: border-color 0.3s;
+    }
+    .login-container input:focus {
+      border-color: #74ebd5;
+    }
+    .login-container button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 15px;
+      background: #74ebd5;
+      border: none;
+      border-radius: 8px;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .login-container button:hover {
+      background: #4bb3a7;
+    }
+    #mensaje {
+      color: red;
+      margin-top: 10px;
+    }
+    #contenido {
+      display: none;
+      width: 90%;
+      margin: auto;
+      text-align: center;
+    }
+    #gridBoletos {
+      display: grid;
+      grid-template-columns: repeat(25, 1fr);
+      gap: 5px;
+      margin-top: 20px;
+    }
+    .boleto {
+      border: 1px solid #ccc;
+      padding: 5px;
+      text-align: center;
+      cursor: pointer;
+      border-radius: 4px;
+      background: #f9f9f9;
+      transition: transform 0.2s;
+    }
+    .boleto:hover {
+      transform: scale(1.05);
+    }
     .verde { background-color: lightgreen; }
     .azul { background-color: lightblue; }
     .amarillo { background-color: lightyellow; }
     .gris { background-color: lightgray; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
   </style>
 </head>
 <body>
-  <h1>Rifa Online</h1>
-
-  <!-- Formulario de login -->
-  <div id="loginForm">
+  <!-- Login -->
+  <div id="loginForm" class="login-container">
+    <h1>Rifa Online</h1>
     <input type="text" id="usuario" placeholder="Usuario">
     <input type="password" id="clave" placeholder="Clave">
     <button id="ingresar">Ingresar</button>
-    <p id="mensaje" style="color:red;"></p>
+    <p id="mensaje"></p>
   </div>
 
   <!-- Contenido principal -->
@@ -39,12 +115,10 @@
   <!-- Socket.IO desde tu servidor -->
   <script src="/socket.io/socket.io.js"></script>
   <script>
-    const socket = io(); // se conecta automáticamente al mismo host
-
-    const colores = { "JPACHAS": "verde", "KPACHAS": "azul", "CPACHAS": "amarillo", "NBRAVO": "gris" };
+    const socket = io();
+    const colores = { "JPACHAS": "verde", "KPACHAS": "azul", "CPACHAS": "amarillo", "NBRAVO": "gris", "JTERR": "rosado" };
     let usuarioActivo = null;
 
-    // Revisar si ya hay usuario guardado
     window.addEventListener("load", () => {
       const savedUser = localStorage.getItem("usuarioActivo");
       if (savedUser) {
@@ -119,18 +193,3 @@
     document.getElementById("guardar").addEventListener("click", () => {
       socket.emit("estado_request");
       alert("Cambios guardados y sincronizados.");
-    });
-
-    document.getElementById("exportar").addEventListener("click", () => {
-      window.location.href = "/exportar";
-    });
-
-    document.getElementById("logout").addEventListener("click", () => {
-      localStorage.removeItem("usuarioActivo");
-      usuarioActivo = null;
-      document.getElementById("contenido").style.display = "none";
-      document.getElementById("loginForm").style.display = "flex";
-    });
-  </script>
-</body>
-</html>
