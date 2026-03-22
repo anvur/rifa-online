@@ -36,9 +36,12 @@ io.on("connection", (socket) => {
 
   // --- Lógica de login ---
   socket.on("login", ({ usuario, clave }) => {
+    console.log(`Intento de login: ${usuario}`);
     if (usuariosValidos[usuario] && usuariosValidos[usuario] === clave) {
+      console.log(`Login correcto: ${usuario}`);
       socket.emit("login_ok", { usuario });
     } else {
+      console.log(`Login fallido: ${usuario}`);
       socket.emit("login_error", "Usuario o clave incorrectos");
     }
   });
@@ -54,6 +57,7 @@ io.on("connection", (socket) => {
     }
   });
 
+  // Forzar actualización
   socket.on("estado_request", () => {
     socket.emit("estado", boletos);
   });
