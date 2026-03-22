@@ -18,6 +18,15 @@ app.get("/", (req, res) => {
 // --- Lógica de la rifa ---
 let boletos = require("./boletos.json");
 
+// Usuarios válidos (puedes ajustar las claves según tu necesidad)
+const usuariosValidos = {
+  "JPACHAS": "1234",
+  "KPACHAS": "2222",
+  "CPACHAS": "3333",
+  "NBRAVO": "0000",
+  "JTERR": "5555"
+};
+
 // Cuando un cliente se conecta
 io.on("connection", (socket) => {
   console.log("Cliente conectado");
@@ -25,13 +34,28 @@ io.on("connection", (socket) => {
   // Enviar estado inicial
   socket.emit("estado", boletos);
 
+  // --- Lógica de login ---
+  socket.on("login", ({ usuario, clave }) => {
+    if (usuariosValidos[usuario] && usuariosValidos[usuario] === clave) {
+      socket.emit("login_ok", { usuario });
+    } else {
+      socket.emit("login_error", "Usuario o clave incorrectos");
+    }
+  });
+
   // Reservar un número
-  socket.on("reservar", (numero) => {
+  socket.on("seleccionar", ({ numero, nombre, usuario }) => {
     if (!boletos[numero]) {
-      boletos[numero] = true;
+      boletos[numero] = { nombre, usuario };
       fs.writeFileSync("boletos.json", JSON.stringify(boletos, null, 2));
       io.emit("estado", boletos);
+    } else {
+      socket.emit("seleccion_error", "Ese número ya está ocupado");
     }
+  });
+
+  socket.on("estado_request", () => {
+    socket.emit("estado", boletos);
   });
 
   socket.on("disconnect", () => {
