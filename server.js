@@ -5,12 +5,12 @@ const io = require("socket.io")(http);
 const path = require("path");
 const fs = require("fs");
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 10000; // Render usa este puerto
 
-// Middleware para servir archivos estáticos (CSS, JS, imágenes) desde carpeta public
+// Middleware para servir archivos estáticos
 app.use(express.static(path.join(__dirname, "public")));
 
-// Ruta principal: sirve index.html desde carpeta public
+// Ruta principal
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
 });
@@ -27,14 +27,14 @@ const usuariosValidos = {
   "JTERR": "5555"
 };
 
-// Cuando un cliente se conecta
+// Conexión de clientes
 io.on("connection", (socket) => {
   console.log("Cliente conectado");
 
-  // Enviar estado inicial
+  // Estado inicial
   socket.emit("estado", boletos);
 
-  // --- Lógica de login ---
+  // Login
   socket.on("login", ({ usuario, clave }) => {
     console.log("Intento de login:", usuario, clave);
     if (usuariosValidos[usuario] && usuariosValidos[usuario] === clave) {
@@ -46,7 +46,7 @@ io.on("connection", (socket) => {
     }
   });
 
-  // Reservar un número
+  // Selección de boletos
   socket.on("seleccionar", ({ numero, nombre, usuario }) => {
     if (!boletos[numero]) {
       boletos[numero] = { nombre, usuario };
@@ -57,7 +57,7 @@ io.on("connection", (socket) => {
     }
   });
 
-  // Forzar actualización
+  // Actualización manual
   socket.on("estado_request", () => {
     socket.emit("estado", boletos);
   });

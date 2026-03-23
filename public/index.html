@@ -22,74 +22,32 @@
       text-align: center;
       animation: fadeIn 1s ease;
     }
-    .login-container h1 {
-      margin-bottom: 20px;
-      color: #333;
-    }
+    .login-container h1 { margin-bottom: 20px; color: #333; }
     .login-container input {
-      width: 100%;
-      padding: 10px;
-      margin: 8px 0;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      outline: none;
-      transition: border-color 0.3s;
-    }
-    .login-container input:focus {
-      border-color: #74ebd5;
+      width: 100%; padding: 10px; margin: 8px 0;
+      border: 1px solid #ccc; border-radius: 8px;
     }
     .login-container button {
-      width: 100%;
-      padding: 10px;
-      margin-top: 15px;
-      background: #74ebd5;
-      border: none;
-      border-radius: 8px;
-      color: white;
-      font-weight: bold;
-      cursor: pointer;
-      transition: background 0.3s;
+      width: 100%; padding: 10px; margin-top: 15px;
+      background: #74ebd5; border: none; border-radius: 8px;
+      color: white; font-weight: bold; cursor: pointer;
     }
-    .login-container button:hover {
-      background: #4bb3a7;
-    }
-    #mensaje {
-      color: red;
-      margin-top: 10px;
-    }
-    #contenido {
-      display: none;
-      width: 90%;
-      margin: auto;
-      text-align: center;
-    }
+    .login-container button:hover { background: #4bb3a7; }
+    #mensaje { color: red; margin-top: 10px; }
+    #contenido { display: none; width: 90%; margin: auto; text-align: center; }
     #gridBoletos {
-      display: grid;
-      grid-template-columns: repeat(25, 1fr);
-      gap: 5px;
-      margin-top: 20px;
+      display: grid; grid-template-columns: repeat(25, 1fr);
+      gap: 5px; margin-top: 20px;
     }
     .boleto {
-      border: 1px solid #ccc;
-      padding: 5px;
-      text-align: center;
-      cursor: pointer;
-      border-radius: 4px;
-      background: #f9f9f9;
-      transition: transform 0.2s;
-    }
-    .boleto:hover {
-      transform: scale(1.05);
+      border: 1px solid #ccc; padding: 5px; text-align: center;
+      cursor: pointer; border-radius: 4px; background: #f9f9f9;
     }
     .verde { background-color: lightgreen; }
     .azul { background-color: lightblue; }
     .amarillo { background-color: lightyellow; }
     .gris { background-color: lightgray; }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(-20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
+    .pink { background-color: pink; }
   </style>
 </head>
 <body>
@@ -112,10 +70,10 @@
     <div id="gridBoletos"></div>
   </div>
 
-  <!-- Socket.IO desde tu servidor -->
+  <!-- Socket.IO desde tu servidor Render -->
   <script src="/socket.io/socket.io.js"></script>
   <script>
-    const socket = io();
+    const socket = io(); // se conecta al mismo host Render
     const colores = { "JPACHAS": "verde", "KPACHAS": "azul", "CPACHAS": "amarillo", "NBRAVO": "gris", "JTERR": "pink" };
     let usuarioActivo = null;
 
@@ -185,8 +143,12 @@
       alert("Cambios guardados y sincronizados.");
     });
 
-    document.getElementById("exportar").addEventListener("click", () => {
-      window.location.href = "/exportar";
+    document.getElementById("logout").addEventListener("click", () => {
+      localStorage.removeItem("usuarioActivo");
+      usuarioActivo = null;
+      document.getElementById("contenido").style.display = "none";
+      document.getElementById("loginForm").style.display = "block";
     });
-
-    document.getElementById
+  </script>
+</body>
+</html>
