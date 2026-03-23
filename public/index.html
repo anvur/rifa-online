@@ -108,22 +108,18 @@
       }
     }
 
-    socket.on("estado", (boletos) => {
-      document.querySelectorAll(".boleto").forEach(div => {
-        const numero = div.dataset.numero;
-        div.className = "boleto";
-        div.innerHTML = numero;
-        if (boletos[numero]) {
-          const { nombre, usuario } = boletos[numero];
-          const input = document.createElement("input");
-          input.type = "text";
-          input.value = nombre;
-          input.disabled = true;
-          div.appendChild(input);
-          div.classList.add(colores[usuario]);
-        }
-      });
-    });
+   socket.on("estado", (boletos) => {
+  document.querySelectorAll(".boleto").forEach(div => {
+    const numero = div.dataset.numero;
+    div.className = "boleto";
+    div.textContent = numero; // solo número, sin input
+    if (boletos[numero]) {
+      const { usuario } = boletos[numero];
+      div.classList.add(colores[usuario]); // solo color
+    }
+  });
+});
+
 
     function seleccionar(div) {
       const numero = div.dataset.numero;
