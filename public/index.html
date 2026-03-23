@@ -116,18 +116,8 @@
   <script src="/socket.io/socket.io.js"></script>
   <script>
     const socket = io();
-    const colores = { "JPACHAS": "verde", "KPACHAS": "azul", "CPACHAS": "amarillo", "NBRAVO": "gris", "JTERR": "rosado" };
+    const colores = { "JPACHAS": "verde", "KPACHAS": "azul", "CPACHAS": "amarillo", "NBRAVO": "gris", "JTERR": "pink" };
     let usuarioActivo = null;
-
-    window.addEventListener("load", () => {
-      const savedUser = localStorage.getItem("usuarioActivo");
-      if (savedUser) {
-        usuarioActivo = savedUser;
-        document.getElementById("loginForm").style.display = "none";
-        document.getElementById("contenido").style.display = "block";
-        crearGrid();
-      }
-    });
 
     document.getElementById("ingresar").addEventListener("click", () => {
       const user = document.getElementById("usuario").value.trim();
@@ -193,3 +183,10 @@
     document.getElementById("guardar").addEventListener("click", () => {
       socket.emit("estado_request");
       alert("Cambios guardados y sincronizados.");
+    });
+
+    document.getElementById("exportar").addEventListener("click", () => {
+      window.location.href = "/exportar";
+    });
+
+    document.getElementById

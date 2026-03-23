@@ -18,7 +18,7 @@ app.get("/", (req, res) => {
 // --- Lógica de la rifa ---
 let boletos = require("./boletos.json");
 
-// Usuarios válidos (puedes ajustar las claves según tu necesidad)
+// Usuarios válidos
 const usuariosValidos = {
   "JPACHAS": "1234",
   "KPACHAS": "2222",
@@ -36,12 +36,12 @@ io.on("connection", (socket) => {
 
   // --- Lógica de login ---
   socket.on("login", ({ usuario, clave }) => {
-    console.log(`Intento de login: ${usuario}`);
+    console.log("Intento de login:", usuario, clave);
     if (usuariosValidos[usuario] && usuariosValidos[usuario] === clave) {
-      console.log(`Login correcto: ${usuario}`);
+      console.log("Login correcto:", usuario);
       socket.emit("login_ok", { usuario });
     } else {
-      console.log(`Login fallido: ${usuario}`);
+      console.log("Login fallido:", usuario);
       socket.emit("login_error", "Usuario o clave incorrectos");
     }
   });
